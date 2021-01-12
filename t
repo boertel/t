@@ -66,7 +66,7 @@ else
     if is_js "$PARENT"; then
         FILENAME="$(is_js "$PARENT")"
         TMUXP_CRA_TEMPLATE="$TMUXP_TEMPLATE/$FILENAME"
-        CMD="cp $TMUXP_CRA_TEMPLATE $DEST && sed -i -e s/{{NAME}}/$SESSION_NAME/g $DEST && tmuxp load $SESSION_NAME"
+        CMD="cp $TMUXP_CRA_TEMPLATE $DEST && sed -i '' -e s/{{NAME}}/$SESSION_NAME/g $DEST && tmuxp load $SESSION_NAME"
     else
         # join or create a session
         EXISTS=$(tmux ls | cut -d ":" -f 1 | grep "^${SESSION_NAME}$")
