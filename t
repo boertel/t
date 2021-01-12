@@ -79,4 +79,4 @@ else
 fi
 
 msg "$CMD"
-#eval "$CMD"
+eval "$CMD"
