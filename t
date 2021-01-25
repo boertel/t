@@ -47,7 +47,7 @@ elif [[ "$1" == "--" && -e "$2" ]]; then
     shift
     PARENT="$1"
 elif git rev-parse --is-inside-work-tree &> /dev/null; then
-    PARENT="$(git root)"
+    PARENT="$(git rev-parse --show-toplevel)"
 else
     PARENT="$(pwd)"
 fi
