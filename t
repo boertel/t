@@ -19,6 +19,26 @@ function is_js {
     return 1
 }
 
+function is_jekyll {
+    DEFAULT_BRANCH="$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')"
+    if [[ "$DEFAULT_BRANCH" == "gh-pages" ]]; then
+        echo "jekyll.yaml"
+        return 0
+    fi
+    return 1
+}
+
+function get_template {
+    if is_jekyll "$1"; then
+        is_jekyll "$1"
+        return 0
+    elif is_js "$1"; then
+        is_js "$1"
+        return 0
+    fi
+    return 1
+}
+
 usage() {
     cat <<EOF
 Usage: $(basename "${BASH_SOURCE[0]}") [-h|--help] [-- path]
@@ -63,9 +83,9 @@ elif [[ -e "$CONF" ]]; then
 elif [[ -e $DEST ]]; then
     CMD="tmuxp load $SESSION_NAME"
 else
-    if is_js "$PARENT"; then
-        FILENAME="$(is_js "$PARENT")"
-        TMUXP_CRA_TEMPLATE="$TMUXP_TEMPLATE/$FILENAME"
+    if get_template "$PARENT"; then
+        FILENAME="$(get_template "$PARENT")"
+        TMUXP_PROJECT_TEMPLATE="$TMUXP_TEMPLATE/$FILENAME"
         CMD="cp $TMUXP_CRA_TEMPLATE $DEST && sed -i '' -e s/{{NAME}}/$SESSION_NAME/g $DEST && tmuxp load $SESSION_NAME"
     else
         # join or create a session
