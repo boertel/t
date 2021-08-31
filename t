@@ -30,10 +30,8 @@ function is_jekyll {
 
 function get_template {
     if is_jekyll "$1"; then
-        is_jekyll "$1"
         return 0
     elif is_js "$1"; then
-        is_js "$1"
         return 0
     fi
     return 1
@@ -86,7 +84,7 @@ else
     if get_template "$PARENT"; then
         FILENAME="$(get_template "$PARENT")"
         TMUXP_PROJECT_TEMPLATE="$TMUXP_TEMPLATE/$FILENAME"
-        CMD="cp $TMUXP_CRA_TEMPLATE $DEST && sed -i '' -e s/{{NAME}}/$SESSION_NAME/g $DEST && tmuxp load $SESSION_NAME"
+        CMD="cp $TMUXP_PROJECT_TEMPLATE $DEST && sed -i '' -e s/{{NAME}}/$SESSION_NAME/g $DEST && tmuxp load $SESSION_NAME"
     else
         # join or create a session
         EXISTS=$(tmux ls | cut -d ":" -f 1 | grep "^${SESSION_NAME}$")
