@@ -5,6 +5,15 @@
 TMUXP="$HOME/.tmuxp"
 TMUXP_TEMPLATE="$TMUXP/templates"
 
+function is_python {
+    POETRY_LOCK="$1/./poetry.lock"
+    if [[ -e $POETRY_LOCK ]]; then
+        echo "poetry.lock"
+        return 0
+    fi
+    return 1
+}
+
 function is_js {
     PACKAGE_JSON="$1/./package.json"
     if [[ -e $PACKAGE_JSON ]]; then
@@ -13,6 +22,9 @@ function is_js {
             return 0
         elif [[ $(jq ".scripts.start" -- "$PACKAGE_JSON") =~ "next start" ]]; then
             echo "create-next-app.yaml"
+            return 0
+        elif [[ $(jq ".scripts.start" -- "$PACKAGE_JSON") =~ "remix-serve build" ]]; then
+            echo "create-remix.yaml"
             return 0
         fi
     fi
