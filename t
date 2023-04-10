@@ -23,7 +23,7 @@ function is_js {
         elif [[ $(jq ".scripts.start" -- "$PACKAGE_JSON") =~ "next start" ]]; then
             echo "create-next-app.yaml"
             return 0
-        elif [[ $(jq ".scripts.start" -- "$PACKAGE_JSON") =~ "remix-serve build" ]]; then
+        elif [[ -f "$1/./remix.config.js" ]]; then
             echo "create-remix.yaml"
             return 0
         fi
@@ -32,7 +32,7 @@ function is_js {
 }
 
 function is_jekyll {
-    DEFAULT_BRANCH="$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')"
+    DEFAULT_BRANCH="$(git symbolic-ref --quiet refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')"
     if [[ "$DEFAULT_BRANCH" == "gh-pages" ]]; then
         echo "jekyll.yaml"
         return 0
