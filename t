@@ -26,6 +26,9 @@ function is_js {
         elif [[ -f "$1/./remix.config.js" ]]; then
             echo "create-remix.yaml"
             return 0
+        elif [[ -f "$1/./vite.config.ts" ]]; then
+            echo "create-vite.yaml"
+            return 0
         fi
     fi
     return 1
